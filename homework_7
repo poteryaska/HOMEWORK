@@ -1,0 +1,54 @@
+import json
+
+student = {}
+profession = {}
+results = {}
+
+
+def load_students():
+    '''Чтение данных из students.json файла'''
+    with open('students.json', 'r', encoding='utf-8') as f:
+        students = f.read()
+        students_file = json.loads(students)
+    return students_file
+
+
+def load_professions():
+    '''Чтение данных из professions.json файла'''
+    with open('professions.json', 'r', encoding='utf-8') as f:
+        professions = f.read()
+        professions_file = json.loads(professions)
+    return professions_file
+
+
+def get_student_by_pk(pk, students):
+    '''Поиск по номеру студента в файле и сохраниение ФИО и навыков в список student'''
+    for i in students:
+        if pk == i["pk"]:
+            student[i["full_name"]] = i["skills"]
+    return student
+
+
+def get_profession_by_title(title, professions):
+    '''Поиск по названию профессии в файле и сохраниение
+    названия профессии и навыков в список profession
+    '''
+    for i in professions:
+        if title == i["title"]:
+            profession[i["title"]] = i["skills"]
+    return profession
+
+
+def check_fitness(student, profession):
+    '''Берем навыки студента и навыки, необхлждимые для профессии и сравниваем их'''
+    for value in student.values():
+        has_skill = set(value)
+    for value in profession.values():
+        profession_skill = set(value)
+    results['has'] = list(has_skill.intersection(profession_skill))
+    results['lacks'] = list(profession_skill.difference(has_skill))
+    results['fit_percent'] = round(len(results['has']) / len(profession_skill) * 100)
+    return results
+
+
+
